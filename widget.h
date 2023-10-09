@@ -3,7 +3,8 @@
 
 #include <QWidget>
 #include<QMediaPlayer>
-#include <QTimer>
+#include<QMediaPlaylist>
+#include <QStandardItemModel>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
@@ -42,5 +43,8 @@ private:
     Ui::Widget *ui;
     QMediaPlayer* m_player;
     bool muted;
+
+    QMediaPlaylist* m_playlist;
+    QStandardItemModel* m_playlist_model;
 };
 #endif // WIDGET_H

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>630</width>
-    <height>266</height>
+    <height>437</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -111,7 +111,7 @@
   <widget class="QSlider" name="horizontalSliderProgress">
    <property name="geometry">
     <rect>
-     <x>0</x>
+     <x>10</x>
      <y>130</y>
      <width>561</width>
      <height>16</height>
@@ -184,6 +184,16 @@
    </property>
    <property name="text">
     <string/>
+   </property>
+  </widget>
+  <widget class="QTableView" name="tablePlaylist">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>181</y>
+     <width>581</width>
+     <height>211</height>
+    </rect>
    </property>
   </widget>
  </widget>
