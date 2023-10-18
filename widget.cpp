@@ -39,21 +39,30 @@ Widget::Widget(QWidget *parent)
     ///////////////////////   Playlist   ////////////////////
 
     m_playlist_model = new QStandardItemModel(this);
-    ui->tablePlaylist->setModel(m_playlist_model);
+    ui->tablePlaylist->setModel(m_playlist_model);//связываем таблицу с моделью
     m_playlist_model->setHorizontalHeaderLabels(QStringList() << tr("Audio track") << tr("File path"));
-    ui->tablePlaylist->setEditTriggers((QAbstractItemView::NoEditTriggers));
+
+    ui->tablePlaylist->hideColumn(1);//скрываем столбец адресом файла
+    ui->tablePlaylist->horizontalHeader()->setStretchLastSection(true);//растягиваем отображаемый столбец на всю ширину окна
+    ui->tablePlaylist->setEditTriggers((QAbstractItemView::NoEditTriggers));//запрещаем редактирование ячеек таблицы
 
     m_playlist = new QMediaPlaylist(m_player);
     m_player->setPlaylist(m_playlist);
 
     connect(ui->tablePlaylist, &QTableView::doubleClicked,
-            [this](const QModelIndex& index){ m_playlist->setCurrentIndex(index.row());});
+            [this](const QModelIndex& index){ m_playlist->setCurrentIndex(index.row()); m_player->play();});
     connect(m_playlist, &QMediaPlaylist::currentIndexChanged,
             [this](int index)
     {
         ui->labelComposition->setText(m_playlist_model->data(m_playlist_model->index(index, 0)).toString());
+        ui->tablePlaylist->selectRow(index);
     }
     );
+    ////////////////////////////////////////////////////////////
+
+
+    ///////////////////////   Load Playlist   ////////////////////
+
      m_playlist->load(QUrl::fromLocalFile("D:/Source/Qt/build-MediaPlayer-Desktop_Qt_5_12_12_MSVC2015_64bit-Debug/debug/playlist.m3u"), "m3u");
     for(int i=0; i < m_playlist->mediaCount(); i++)
     {
@@ -165,5 +174,14 @@ void Widget::on_pushButtonMute_clicked()
 }
 
 
+void Widget::on_pushButtonNext_clicked()
+{
+    m_playlist->next();
+}
 
+
+void Widget::on_pushButtonPrev_clicked()
+{
+    m_playlist->previous();
+}
 
