@@ -28,16 +28,10 @@ private slots:
     void on_position_changed(qint64 position);
     void on_duration_changed(qint64 duration);
 
-
-
     void on_horizontalSliderProgress_valueChanged(qint64 position);
 
-
-
-
-
-
     void on_pushButtonMute_clicked();
+
 
 private:
     Ui::Widget *ui;
@@ -46,5 +40,6 @@ private:
 
     QMediaPlaylist* m_playlist;
     QStandardItemModel* m_playlist_model;
+
 };
 #endif // WIDGET_H

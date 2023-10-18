@@ -4,13 +4,13 @@
 #include<QFileDialog>
 #include<QDir>
 #include <QTime>
-//#include <QMessageBox>
+#include<QMediaContent>
 
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)
 {
-    //             Buttons style
+    ////////////////////    Buttons style  ///////////////////
     ui->setupUi(this);
     ui->pushButtonAdd->setIcon(style()->standardIcon(QStyle::SP_DriveDVDIcon));
     ui->pushButtonPrev->setIcon(style()->standardIcon(QStyle::SP_MediaSkipBackward));
@@ -22,9 +22,10 @@ Widget::Widget(QWidget *parent)
 
     this->muted = false;
 
+
     //ui->horizontalSliderProgress->setTickPosition(QSlider::TicksBelow);
 
-    //          Player init
+    //////////////////////    Player init //////////////////
     m_player = new QMediaPlayer(this);
     //on_horizontalSliderVolume_valueChanged(70);
     m_player->setVolume(70);
@@ -33,6 +34,7 @@ Widget::Widget(QWidget *parent)
 
     connect(m_player, &QMediaPlayer::durationChanged, this, &Widget::on_duration_changed);
     connect(m_player, &QMediaPlayer::positionChanged, this, &Widget::on_position_changed);
+
 
     ///////////////////////   Playlist   ////////////////////
 
@@ -52,11 +54,27 @@ Widget::Widget(QWidget *parent)
         ui->labelComposition->setText(m_playlist_model->data(m_playlist_model->index(index, 0)).toString());
     }
     );
-
+     m_playlist->load(QUrl::fromLocalFile("D:/Source/Qt/build-MediaPlayer-Desktop_Qt_5_12_12_MSVC2015_64bit-Debug/debug/playlist.m3u"), "m3u");
+    for(int i=0; i < m_playlist->mediaCount(); i++)
+    {
+        QMediaContent content = m_playlist->media(i);
+        QString url = content.canonicalUrl().url();
+        QList<QStandardItem*> items;
+        items.append(new QStandardItem(QDir(url).dirName()));
+        items.append(new QStandardItem(url));
+        m_playlist_model->appendRow(items);
+    }
 }
 
 Widget::~Widget()
 {
+   //QMessageBox mb (QMessageBox::Icon::Information, QString("Buy"), QString("Buy"), QMessageBox::StandardButton::Ok, this);
+   //mb.Show();
+   m_playlist->save(QUrl::fromLocalFile("D:/Source/Qt/build-MediaPlayer-Desktop_Qt_5_12_12_MSVC2015_64bit-Debug/debug/playlist.m3u"), "m3u");
+
+    delete this->m_playlist_model;
+    delete this->m_playlist;
+    delete this->m_player;
     delete ui;
 }
 
@@ -75,26 +93,26 @@ void Widget::on_pushButtonAdd_clicked()
 //    this->setWindowTitle("Media Player PU_211 -" +  file.split('/').back());
     QStringList files = QFileDialog::getOpenFileNames(
                 this, tr("Open files"),
-                QString("C:\\Users\\Галима\\Desktop\\Music"),
+                QString("E:\\Users\\Galima\\Desktop\\Music"),
                 tr("Audio files (*.mp3 *lac);; mp-3 Flac (*.flac)")
                 );
 
     for(QString filesPath: files)
     {
         //1) Создаем строку:
-        //Каждая строка таблицы 'tablePlayList' - это списокстандартных вхождений
+        //Каждая строка таблицы 'tablePlayList' - это списокс стандартных вхождений
         QList<QStandardItem*> items;
         items.append(new QStandardItem(QDir(filesPath).dirName()));
         items.append(new QStandardItem(filesPath));
-         m_playlist_model->appendRow(items);
+        m_playlist_model->appendRow(items);
         m_playlist->addMedia(QUrl(filesPath));
 
     }
 
 }
 
-
 void Widget::on_horizontalSliderVolume_valueChanged(int value)
+
 {
     ui->labelVolume->setText(QString("Volume: ").append(QString::number(value)));
     m_player->setVolume(value);
@@ -104,6 +122,7 @@ void Widget::on_horizontalSliderVolume_valueChanged(int value)
 void Widget::on_pushButtonPlay_clicked()
 {
     m_player->play();
+
 }
 
 
@@ -144,4 +163,7 @@ void Widget::on_pushButtonMute_clicked()
     m_player->setMuted(muted);
     ui->pushButtonMute->setIcon(style()->standardIcon(muted ? QStyle::SP_MediaVolumeMuted : QStyle::SP_MediaVolume));
 }
+
+
+
 
