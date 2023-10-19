@@ -18,6 +18,9 @@ public:
     Widget(QWidget *parent = nullptr);
     ~Widget();
 
+    void load_playlist(QString filename);
+    void save_playlist(QString filename);
+
 private slots:
     void on_pushButtonAdd_clicked();
     void on_horizontalSliderVolume_valueChanged(int value);
@@ -37,10 +40,13 @@ private slots:
 
     void on_pushButtonPrev_clicked();
 
+    void on_pushButtonCLR_clicked();
+
 private:
     Ui::Widget *ui;
     QMediaPlayer* m_player;
     bool muted;
+    const char* DEFAULT_PLAYLIST = "D:/Source/Qt/build-MediaPlayer-Desktop_Qt_5_12_12_MSVC2015_64bit-Debug/debug/playlist.m3u";
 
     QMediaPlaylist* m_playlist;
     QStandardItemModel* m_playlist_model;
