@@ -46,6 +46,8 @@ private slots:
 
     void on_horizontalSliderProgress_sliderMoved(int position);
 
+
+
 private:
     Ui::Widget *ui;
     QMediaPlayer* m_player;
