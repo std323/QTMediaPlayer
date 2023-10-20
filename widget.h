@@ -42,6 +42,8 @@ private slots:
 
     void on_pushButtonCLR_clicked();
 
+    void on_pushButtonRem_clicked();
+
 private:
     Ui::Widget *ui;
     QMediaPlayer* m_player;

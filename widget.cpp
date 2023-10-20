@@ -32,6 +32,7 @@ Widget::Widget(QWidget *parent)
     ui->labelVolume->setText((QString("Volume: ").append(QString::number(m_player->volume()))));
     ui->horizontalSliderVolume->setValue(m_player->volume());
 
+
     connect(m_player, &QMediaPlayer::durationChanged, this, &Widget::on_duration_changed);
     connect(m_player, &QMediaPlayer::positionChanged, this, &Widget::on_position_changed);
 
@@ -46,7 +47,10 @@ Widget::Widget(QWidget *parent)
     ui->tablePlaylist->horizontalHeader()->setStretchLastSection(true);//растягиваем отображаемый столбец на всю ширину окна
     ui->tablePlaylist->setEditTriggers((QAbstractItemView::NoEditTriggers));//запрещаем редактирование ячеек таблицы
 
-    m_playlist = new QMediaPlaylist(m_player);
+    ui->tablePlaylist->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tablePlaylist->setSelectionMode(QAbstractItemView::SelectionMode::ExtendedSelection);
+
+                                        m_playlist = new QMediaPlaylist(m_player);
     m_player->setPlaylist(m_playlist);
 
     connect(ui->tablePlaylist, &QTableView::doubleClicked,
@@ -221,4 +225,29 @@ void Widget::on_pushButtonCLR_clicked()
     m_playlist_model->clear();
     ui->labelComposition->setText("Erased");
 }
+
+
+void Widget::on_pushButtonRem_clicked()
+{
+// QModelIndexList list = ui->tablePlaylist->selec;
+//  for(QModelIndex i: list)
+//  {
+//      m_playlist->removeMedia(i.row());
+//  }
+
+      QItemSelectionModel* selection = ui->tablePlaylist->selectionModel();
+      QModelIndexList rows = selection->selectedRows();
+      for(QModelIndexList::iterator it = rows.begin(); it !=rows.end(); ++it)
+      {
+         if(m_playlist->removeMedia(it->row()));
+          m_playlist_model->removeRows(it->row(), 1);
+      }
+
+      //while(!rows.isEmpty())
+      //{
+          //m_playlist_model->removeRows(rows.last().row(), 1);
+         // rows.removeLast();
+      //}
+
+      }
 
