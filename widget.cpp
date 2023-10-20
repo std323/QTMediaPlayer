@@ -251,3 +251,9 @@ void Widget::on_pushButtonRem_clicked()
 
       }
 
+
+void Widget::on_horizontalSliderProgress_sliderMoved(int position)
+{
+    m_player->setPosition(position);
+}
+
