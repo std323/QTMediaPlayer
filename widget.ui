@@ -350,7 +350,15 @@ QSlider::handle:horizontal
 	border-radius:			5px;
 	background-color:	rgb(222,222,222);
 	color:                            rgb(11,11,11);
-}</string>
+}
+QPushButton:checked
+{
+	border:					none;
+	border-radius:			5px;
+	background-color:	rgb(11,11,11);
+	color:                            rgb(222,222,222);
+}
+</string>
    </property>
    <property name="text">
     <string>Shuffle</string>
@@ -372,6 +380,13 @@ QSlider::handle:horizontal
 	border-radius:			5px;
 	background-color:	rgb(222,222,222);
 	color:                            rgb(11,11,11);
+}
+QPushButton:checked
+{
+	border:					none;
+	border-radius:			5px;
+	background-color:	rgb(11,11,11);
+	color:                            rgb(222,222,222);
 }</string>
    </property>
    <property name="text">

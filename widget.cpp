@@ -79,6 +79,11 @@ Widget::Widget(QWidget *parent)
         m_playlist_model->appendRow(items);
     }*/
     load_playlist(DEFAULT_PLAYLIST);
+
+    ui->pushButtonShuffle->setCheckable(true);
+    ui->pushButtonLoop->setCheckable(true);
+    shuffle = false;
+    loop = false;
 }
 
 Widget::~Widget()
@@ -132,7 +137,7 @@ void Widget::on_pushButtonAdd_clicked()
                          this,
                          tr("Open files"),
                          QString("E:\\Users\\Galima\\Desktop\\Music"),
-                         tr("Audio files (*.mp3 *.flac);; mp-3 (*.mp3);; Flac (*.flac);; Playlist (*.m3u)")
+                         tr("Audio files (*.mp3 *.flac);; mp-3 (*.mp3);; Flac (*.flac);; Playlist (*.m3u);; CUE (*.cue)")
                 );
     QString format = files.back().split('.').back();
     if(format == "m3u")
@@ -252,30 +257,45 @@ void Widget::on_pushButtonRem_clicked()
 
       }
 
-
 void Widget::on_horizontalSliderProgress_sliderMoved(int position)
 {
     m_player->setPosition(position);
 }
-
 
 /*void Widget::on_horizontalSliderVolume_sliderMoved(int position)
 {
     m_player->setVolume(position);
 }*/
 
-
 void Widget::on_pushButtonShuffle_clicked()
 {
-     m_playlist->shuffle();
+     //m_playlist->shuffle();
+    if(!shuffle)
+    {
+        shuffle = true;
+        m_playlist->setPlaybackMode(QMediaPlaylist::PlaybackMode::Random);
+        ui->pushButtonShuffle->setChecked(shuffle);
+        ui->pushButtonShuffle->setBackgroundRole(QPalette::Dark);
+        ui->pushButtonShuffle->setForegroundRole(QPalette::Light);
+    }
+    else
+    {
+        shuffle = false;
+        m_playlist->setPlaybackMode(QMediaPlaylist::PlaybackMode::Sequential);
+        ui->pushButtonShuffle->setChecked(shuffle);
+        ui->pushButtonShuffle->setBackgroundRole(QPalette::Light);
+        ui->pushButtonShuffle->setForegroundRole(QPalette::Dark);
+    }
 }
-
 
 void Widget::on_pushButtonLoop_clicked()
 {
-    m_playlist->setPlaybackMode(QMediaPlaylist::Loop);
-    m_player->setPlaylist(m_playlist);
-    m_player->play();
+    loop = !loop;
+    m_playlist->setPlaybackMode(QMediaPlaylist::PlaybackMode::Sequential);
+    if(loop)m_playlist->setPlaybackMode(QMediaPlaylist::PlaybackMode::Loop);
+    if(shuffle)m_playlist->setPlaybackMode(QMediaPlaylist::PlaybackMode::Random);
+    //m_player->setPlaylist(m_playlist);
+    //m_player->play();
 
 }
 

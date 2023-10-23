@@ -60,5 +60,7 @@ private:
     QMediaPlaylist* m_playlist;
     QStandardItemModel* m_playlist_model;
 
+    bool shuffle;
+    bool loop;
 };
 #endif // WIDGET_H
