@@ -35,7 +35,6 @@ private slots:
 
     void on_pushButtonMute_clicked();
 
-
     void on_pushButtonNext_clicked();
 
     void on_pushButtonPrev_clicked();
@@ -43,6 +42,14 @@ private slots:
     void on_pushButtonCLR_clicked();
 
     void on_pushButtonRem_clicked();
+
+    void on_horizontalSliderProgress_sliderMoved(int position);
+
+    //void on_horizontalSliderVolume_sliderMoved(int position);
+
+    void on_pushButtonShuffle_clicked();
+
+    void on_pushButtonLoop_clicked();
 
 private:
     Ui::Widget *ui;

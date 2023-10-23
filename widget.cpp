@@ -50,7 +50,7 @@ Widget::Widget(QWidget *parent)
     ui->tablePlaylist->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tablePlaylist->setSelectionMode(QAbstractItemView::SelectionMode::ExtendedSelection);
 
-                                        m_playlist = new QMediaPlaylist(m_player);
+    m_playlist = new QMediaPlaylist(m_player);
     m_player->setPlaylist(m_playlist);
 
     connect(ui->tablePlaylist, &QTableView::doubleClicked,
@@ -129,9 +129,10 @@ void Widget::on_pushButtonAdd_clicked()
 
 //    this->setWindowTitle("Media Player PU_211 -" +  file.split('/').back());
     QStringList files = QFileDialog::getOpenFileNames(
-                this, tr("Open files"),
-                QString("E:\\Users\\Galima\\Desktop\\Music"),
-                tr("Audio files (*.mp3 *lac);; mp-3 Flac (*.flac);; Playlist (*.m3u)")
+                         this,
+                         tr("Open files"),
+                         QString("E:\\Users\\Galima\\Desktop\\Music"),
+                         tr("Audio files (*.mp3 *.flac);; mp-3 (*.mp3);; Flac (*.flac);; Playlist (*.m3u)")
                 );
     QString format = files.back().split('.').back();
     if(format == "m3u")
@@ -250,4 +251,31 @@ void Widget::on_pushButtonRem_clicked()
       //}
 
       }
+
+
+void Widget::on_horizontalSliderProgress_sliderMoved(int position)
+{
+    m_player->setPosition(position);
+}
+
+
+/*void Widget::on_horizontalSliderVolume_sliderMoved(int position)
+{
+    m_player->setVolume(position);
+}*/
+
+
+void Widget::on_pushButtonShuffle_clicked()
+{
+     m_playlist->shuffle();
+}
+
+
+void Widget::on_pushButtonLoop_clicked()
+{
+    m_playlist->setPlaybackMode(QMediaPlaylist::Loop);
+    m_player->setPlaylist(m_playlist);
+    m_player->play();
+
+}
 
